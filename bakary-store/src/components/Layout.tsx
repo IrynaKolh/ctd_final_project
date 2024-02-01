@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import Navigation from './Navigation';
+import Header from './Header';
 
 const Layout: React.FC = () => {
   return (
     <>
-      <Navigation />
+      <Header />
       <main>
         <Outlet />
       </main>
