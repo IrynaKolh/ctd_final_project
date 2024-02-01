@@ -22,6 +22,10 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    imageUrl: [{
+      type: String,
+      required: [true, "Please enter product image"],
+    }],
     reviews: [{ body: String, date: Date }],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
