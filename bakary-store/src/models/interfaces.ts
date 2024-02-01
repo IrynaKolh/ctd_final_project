@@ -16,3 +16,17 @@ export interface User {
   password: string;
   isSeller?: boolean;
 }
+
+export interface AuthUser {
+  token: string;
+  user: {
+    name: string;
+    isSeller: boolean;
+  };
+}
+
+export interface AuthContextProps {
+  user: AuthUser | null;
+  login: (userData: AuthUser) => void;
+  logout: () => void;
+}

@@ -7,7 +7,7 @@ const register = async (req, res) => {
   const token = user.createJWT();
   res
     .status(StatusCodes.CREATED)
-    .json({ user: { name: user.getName() }, token });
+    .json({ user: { name: user.getName(), isSeller: user.isSeller }, token });
 };
 
 const login = async (req, res) => {
@@ -25,10 +25,26 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("Wrong password");
   }
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user.getName() }, token });
+  res.status(StatusCodes.OK).json({ user: { name: user.getName(), isSeller: user.isSeller }, token });
 };
+
+const seller = async (req, res) => {
+  const {
+    user: { userId },
+    body: { isSeller},
+  } = req;
+  console.log(req);
+
+  const seller = await User.findOneAndUpdate(
+    { _id: userId },
+    { isSeller: isSeller },
+    { new: true, runValidators: true }
+  );
+  res.status(StatusCodes.OK).json({ seller: { name: seller.getName(), isSeller: seller.isSeller }, token });
+}
 
 module.exports = {
   register,
   login,
+  seller
 };

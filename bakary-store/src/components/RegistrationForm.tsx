@@ -4,10 +4,12 @@ import { registrationSchema } from '../schemas';
 import { Registration, User } from '../models/interfaces';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../utils/AuthContext';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const onSubmit = async (values: Registration, actions: FormikHelpers<Registration>) => {
     const newUser: User = {
       name: values.name,
@@ -17,8 +19,8 @@ const RegistrationForm: React.FC = () => {
     try {
       const response = await axios.post('http://localhost:3000/auth/register', newUser);
       const user = response.data;
-      console.log('User:', user);
       localStorage.setItem('user', JSON.stringify(user));
+      login(user);
       actions.resetForm();
       navigate('/');
     } catch (error) {

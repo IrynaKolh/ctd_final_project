@@ -11,8 +11,8 @@ const navlinks = [
     path: '/products',
   },
   {
-    name: 'My Store',
-    path: '/my-store',
+    name: 'Blog',
+    path: '/blog',
   },
 ];
 

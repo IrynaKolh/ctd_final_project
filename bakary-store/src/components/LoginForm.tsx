@@ -4,16 +4,19 @@ import { loginSchema } from '../schemas';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Login } from '../models/interfaces';
+import { useAuth } from '../utils/AuthContext';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const onSubmit = async (values: Login, actions: FormikHelpers<Login>) => {
     try {
       const response = await axios.post('http://localhost:3000/auth/login', values);
       const user = response.data;
-      console.log('User:', user);
+
       localStorage.setItem('user', JSON.stringify(user));
+      login(user);
       actions.resetForm();
       navigate('/');
     } catch (error) {

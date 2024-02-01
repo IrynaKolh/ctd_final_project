@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
   res.send("products api");
 });
 app.use("/auth", authRouter);
-app.use("/products", authMiddleware, productsRouter);
+app.use("/products", productsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
