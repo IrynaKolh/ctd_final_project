@@ -1,24 +1,26 @@
 import { FormikHelpers, useFormik } from 'formik';
 import React from 'react';
 import { loginSchema } from '../schemas';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Login } from '../models/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const onSubmit = async (values: Login, actions: FormikHelpers<Login>) => {
-  try {
-    const response = await axios.post('http://localhost:3000/auth/login', values);
-    const user = response.data;
-    console.log('User:', user);
-    localStorage.setItem('user', JSON.stringify(user));
-    actions.resetForm();
-  } catch (error) {
-    console.error('Error submitting form:', error);
-  }
-};
-
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
+  const onSubmit = async (values: Login, actions: FormikHelpers<Login>) => {
+    try {
+      const response = await axios.post('http://localhost:3000/auth/login', values);
+      const user = response.data;
+      console.log('User:', user);
+      localStorage.setItem('user', JSON.stringify(user));
+      actions.resetForm();
+      navigate('/');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+
   const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: {
