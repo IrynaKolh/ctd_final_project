@@ -8,6 +8,7 @@ const express = require("express");
 const connectDb = require("./db/connect");
 const productsRouter = require("./routes/products");
 const authRouter = require("./routes/auth");
+const storeRouter = require("./routes/store");
 const authMiddleware = require("./middlewares/authentication");
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", authRouter);
 app.use("/products", productsRouter);
+app.use('/store', storeRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

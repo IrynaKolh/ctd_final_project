@@ -33,13 +33,13 @@ const seller = async (req, res) => {
     user: { userId },
     body: { isSeller},
   } = req;
-  console.log(req);
-
+  
   const seller = await User.findOneAndUpdate(
     { _id: userId },
     { isSeller: isSeller },
     { new: true, runValidators: true }
   );
+  const token = seller.createJWT();
   res.status(StatusCodes.OK).json({ seller: { name: seller.getName(), isSeller: seller.isSeller }, token });
 }
 
