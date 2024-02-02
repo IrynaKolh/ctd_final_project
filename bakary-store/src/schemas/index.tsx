@@ -25,3 +25,10 @@ export const registrationSchema = yup.object().shape({
     .oneOf([yup.ref('password'), undefined], 'Passwords must match')
     .required('Required'),
 });
+
+export const sellerSchema = yup.object().shape({
+  isSeller: yup
+    .boolean()
+    .required('You must accept to be a seller')
+    .oneOf([true], 'You must accept to be a seller'),
+});
