@@ -2,7 +2,7 @@ import axios from 'axios';
 import { FormikHelpers, useFormik } from 'formik';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../utils/AuthContext';
+import { useAuth } from '../utils/useAuth';
 import { sellerSchema } from '../schemas';
 
 const SellerRegisterForm: React.FC = () => {
@@ -44,12 +44,12 @@ const SellerRegisterForm: React.FC = () => {
           Become a seller
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4 relative" action="#" method="PATCH">
-          <p className="text-left text-sm">
+          <p className="text-left text-base">
             Welcome to the HM Baking Company! This intuitive form empowers you to set up your very
             own online store effortlessly. By utilizing this form, you can craft a unique store
             page, add products to your inventory, and establish a compelling online presence.
           </p>
-          <p className="text-left text-sm">
+          <p className="text-left text-base">
             Thank you for choosing our platform to bring your store to life. If you encounter any
             issues or have questions along the way, our support team is here to assist you.
           </p>
@@ -72,7 +72,7 @@ const SellerRegisterForm: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="my-12 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="my-12 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-base font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Submit
             </button>

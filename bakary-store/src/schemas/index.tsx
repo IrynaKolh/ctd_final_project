@@ -32,3 +32,33 @@ export const sellerSchema = yup.object().shape({
     .required('You must accept to be a seller')
     .oneOf([true], 'You must accept to be a seller'),
 });
+
+export const storeSchema = yup.object({
+  name: yup
+    .string()
+    .min(3, 'Storename must be at least 3 characters long')
+    .max(50, 'Store name cannot exceed 50 characters')
+    .required('Please provide a store name'),
+  description: yup.string().required('Please enter store description'),
+  address: yup.object().shape({
+    country: yup.string().required('Please enter store country'),
+    street: yup.string().required('Please enter store street'),
+    city: yup.string().required('Please enter store city'),
+    state: yup.string().required('Please enter store state'),
+    zipCode: yup.string().required('Please enter store zip code'),
+  }),
+  contact: yup.object().shape({
+    phone: yup.string().required('Please enter store phone number'),
+    email: yup.string().email('Invalid email address').required('Please enter email'),
+  }),
+  ratings: yup.number(),
+  socialMedia: yup.object().shape({
+    facebook: yup.string(),
+    twitter: yup.string(),
+    instagram: yup.string(),
+    linkedin: yup.string(),
+    youtube: yup.string(),
+    tiktok: yup.string(),
+    website: yup.string(),
+  }),
+});

@@ -4,27 +4,32 @@ const storeSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please provide a name"],
-      minlength: [3, "Name must be at least 3 characters"],
-      maxlength: [50, "Name must be no more than 50 characters"],
+      required: [true, "Please provide a store name"],
+      minlength: [3, "Storename must be at least 3 characters long"],
+      maxlength: [50, "Store name cannot exceed 50 characters"],
     },
     description: {
       type: String,
-      required: [true, "Please enter product description"],
+      required: [true, "Please enter store description"],
     },
     ratings: {
       type: Number,
       default: 0,
     },
     address: {
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      zipCode: { type: String, required: true }
+      country: { type: String, enum: [
+        "United States",
+        "Mexico",
+        "Canada",
+      ], required: [true, "Please enter store country"] },
+      street: { type: String, required: [true, "Please enter store street"] },
+      city: { type: String, required: [true, "Please enter store city"] },
+      state: { type: String, required: [true, "Please enter store state"] },
+      zipCode: { type: String, required: [true, "Please enter store zip code"] }
     },
     contact: {
-      email: { type: String, required: true },
-      phone: { type: String, required: true }
+      email: { type: String, required: [true, "Please enter store email"] },
+      phone: { type: String, required: [true, "Please enter store phone number"] }
     },
     socialMedia: {
       facebook: { type: String },

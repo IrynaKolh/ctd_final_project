@@ -10,7 +10,19 @@ const getStoreById = async (req, res) => {
   
   const store = await Store.findOne({ _id: storeId, owner: userId });
   if (!store) {
-    throw new NotFoundError(`No product with id: ${storeId}`);
+    throw new NotFoundError(`No store with id: ${storeId}`);
+  }
+  res.status(StatusCodes.OK).json({ store });
+}
+
+const getStoreByOwner = async (req, res) => {
+  const {
+    user: { userId },    
+  } = req;
+
+  const store = await Store.findOne({ owner: userId });
+  if (!store) {
+    throw new NotFoundError(`This user has no store: ${userId}`);
   }
   res.status(StatusCodes.OK).json({ store });
 }
@@ -47,5 +59,5 @@ const updateStore = async (req, res) => {
 }
 
 module.exports = {
-  getStoreById, registerStore, updateStore
+  getStoreById, registerStore, updateStore, getStoreByOwner
 }

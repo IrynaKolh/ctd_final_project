@@ -4,12 +4,13 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from './../assets/logo.png';
 import { IconLogin, IconUser } from '@tabler/icons-react';
 // import { isUserLogined } from '../utils/helpers';
-import { useAuth } from '../utils/AuthContext';
+import { useAuth } from '../utils/useAuth';
 
 const Header: React.FC = () => {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
   const logoutUser = () => {
+    localStorage.clear();
     logout();
     navigate('/login');
   };
@@ -18,7 +19,7 @@ const Header: React.FC = () => {
     <header className="flex justify-around items-center">
       <div>
         <NavLink to="/">
-          <img src={logo} alt="HM Bakary" className="h-9 rounded" />
+          <img src={logo} alt="HM Bakary" className="h-12 rounded" />
         </NavLink>
       </div>
 
@@ -30,7 +31,7 @@ const Header: React.FC = () => {
             <Link to="/my-store">
               <button
                 type="button"
-                className="text-white bg-yellow-700 border-2 border-transparent p-1 rounded text-sm hover:border-yellow-700 hover:bg-white hover:text-gray-500"
+                className="text-white bg-yellow-700 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
               >
                 My Store
               </button>
@@ -39,7 +40,7 @@ const Header: React.FC = () => {
             <Link to="/seller">
               <button
                 type="button"
-                className="text-white bg-yellow-700 border-2 border-transparent p-1 rounded text-sm hover:border-yellow-700 hover:bg-white hover:text-gray-500"
+                className="text-white bg-yellow-700 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
               >
                 Become a seller
               </button>

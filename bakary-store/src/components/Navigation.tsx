@@ -18,7 +18,7 @@ const navlinks = [
 
 const Navigation: React.FC = () => {
   return (
-    <nav className="text-gray-500  h-10 text-sm flex items-center">
+    <nav className="text-gray-500  h-10 text-lg flex items-center">
       {navlinks.map((link) => (
         <NavLink
           key={link.name}

@@ -40,7 +40,7 @@ const seller = async (req, res) => {
     { new: true, runValidators: true }
   );
   const token = seller.createJWT();
-  res.status(StatusCodes.OK).json({ seller: { name: seller.getName(), isSeller: seller.isSeller }, token });
+  res.status(StatusCodes.OK).json({ user: { name: seller.getName(), isSeller: seller.isSeller }, token });
 }
 
 module.exports = {
