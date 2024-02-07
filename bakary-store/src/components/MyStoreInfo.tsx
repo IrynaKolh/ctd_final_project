@@ -5,11 +5,13 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({ storeInfo }) => {
   return (
     <>
       {storeInfo ? (
-        <div>
-          <h3>{storeInfo.name}</h3>
+        <div className="flex items-center justify-center">
+          <p className="text-xl text-gray-500">{storeInfo.description}</p>
         </div>
       ) : (
-        <div>No store found</div>
+        <div>
+          <h3>You have not created a store yet! Click "Create store" buttton to get started! </h3>
+        </div>
       )}
     </>
   );

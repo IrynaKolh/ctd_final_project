@@ -62,3 +62,22 @@ export const storeSchema = yup.object({
     website: yup.string(),
   }),
 });
+
+export const productSchema = yup.object({
+  name: yup
+    .string()
+    .min(3, 'Product name should be atleast 3 characters long')
+    .max(100, 'Product name cannot exceed 100 characters')
+    .required('Please enter product name'),
+  description: yup.string().required('Please enter store description'),
+  price: yup
+    .number()
+    .max(99999, 'Product price cannot exceed 99999')
+    .required('Please enter product price'),
+  imageUrl: yup.array().of(yup.string()).required('Please enter product image'),
+  type: yup
+    .string()
+    .oneOf(['Cakes', 'Cookies', 'Pies', 'Breads', 'Cupcakes', 'Waffles', 'Others'])
+    .default('Others'),
+  storeId: yup.string().required('Store is required'),
+});

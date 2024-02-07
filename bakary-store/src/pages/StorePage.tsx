@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../utils/useAuth';
 import StoreForm from '../components/StoreForm';
 import MyStoreInfo from '../components/MyStoreInfo';
+import storeBg from '../assets/store-bg.jpg';
+import ProductForm from '../components/ProductForm';
 
 const StorePage: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenStoreModal, setisOpenStoreModal] = useState(false);
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const { user, store, setStoreInfo } = useAuth();
   const headers = {
     Authorization: `Bearer ${user?.token}`,
@@ -27,28 +30,51 @@ const StorePage: React.FC = () => {
     checkShop();
   }, []);
 
-  const handleOpen = () => {
-    setIsOpen(true);
+  const handleOpenStoreModal = () => {
+    setisOpenStoreModal(true);
   };
-  const handleClose = () => {
-    setIsOpen(false);
+  const handleCloseStoreModal = () => {
+    setisOpenStoreModal(false);
+  };
+
+  const handleOpenAddProductModal = () => {
+    setIsAddProductModalOpen(true);
+  };
+
+  const handleCloseAddProductModal = () => {
+    setIsAddProductModalOpen(false);
   };
 
   return (
-    <div>
+    <div className="bg-cover bg-center h-lvh pt-5" style={{ backgroundImage: `url(${storeBg})` }}>
+      <h2 className="inline-block w-2/5 mx-auto mb-3 text-3xl font-bold p-5 text-center bg-white rounded-md">
+        {store?.store?.name}
+      </h2>
       {store ? (
         <>
-          <div className="flex justify-end">
+          <div className="block w-2/3 m-auto text-end">
             <button
               type="button"
-              onClick={handleOpen}
-              className="text-white bg-yellow-700 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
+              onClick={handleOpenAddProductModal}
+              className="text-white bg-yellow-700 px-3 mr-3 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
+            >
+              + Add product
+            </button>
+            <ProductForm
+              isAddProductModalOpen={isAddProductModalOpen}
+              onClose={handleCloseAddProductModal}
+              title="Add Product"
+            ></ProductForm>
+            <button
+              type="button"
+              onClick={handleOpenStoreModal}
+              className="text-white bg-yellow-700 px-3 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
             >
               Update Store
             </button>
             <StoreForm
-              isOpen={isOpen}
-              onClose={handleClose}
+              isOpenStoreModal={isOpenStoreModal}
+              onClose={handleCloseStoreModal}
               title="Update Store"
               storeInfo={store.store}
             />
@@ -59,12 +85,17 @@ const StorePage: React.FC = () => {
         <div>
           <button
             type="button"
-            onClick={handleOpen}
+            onClick={handleOpenStoreModal}
             className="text-white bg-yellow-700 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
           >
             Create Store
           </button>
-          <StoreForm isOpen={isOpen} onClose={handleClose} title="Create Store" storeInfo={null} />
+          <StoreForm
+            isOpenStoreModal={isOpenStoreModal}
+            onClose={handleCloseStoreModal}
+            title="Create Store"
+            storeInfo={null}
+          />
         </div>
       )}
     </div>

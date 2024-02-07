@@ -57,6 +57,8 @@ export interface StoreInfo {
   socialMedia?: SocialMedia;
   owner?: string;
   _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface StoreResponse {
@@ -74,10 +76,36 @@ export interface AuthContextProps {
 export interface StoreFormProps {
   title: string;
   storeInfo: StoreInfo | null;
-  isOpen: boolean;
+  isOpenStoreModal: boolean;
   onClose: () => void;
 }
 
 export interface MyStoreInfoProps {
   storeInfo: StoreInfo | null;
+}
+
+export interface ProductFormProps {
+  onClose: () => void;
+  isAddProductModalOpen: boolean;
+  title: string;
+}
+
+type Review = {
+  body: string;
+  data: Date;
+  userId: string;
+};
+
+export interface Product {
+  name: string;
+  description: string;
+  price: number;
+  imageUrl: string[];
+  type: string;
+  storeId: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  rating?: number;
+  review?: [Review];
 }

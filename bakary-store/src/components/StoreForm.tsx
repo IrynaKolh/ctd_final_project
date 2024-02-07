@@ -6,7 +6,7 @@ import { useAuth } from '../utils/useAuth';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpen, onClose }) => {
+const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModal, onClose }) => {
   const navigate = useNavigate();
   const { user, setStoreInfo } = useAuth();
   const headers = {
@@ -73,11 +73,11 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpen, onClose
 
   return (
     <>
-      {isOpen && (
+      {isOpenStoreModal && (
         <div className="fixed inset-0 bg-black bg-opacity-25 flex justify-center items-center z-50">
           <div className="w-full md:max-w-3xl bg-white rounded-lg shadow-md p-6">
             <button
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              className="absolute top-10 right-20 text-gray-500 hover:text-gray-700 bg-white p-3 rounded-full"
               onClick={onClose}
             >
               <svg
@@ -95,7 +95,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpen, onClose
                 />
               </svg>
             </button>
-            <form onSubmit={handleSubmit} action="#" method="POST">
+            <form onSubmit={handleSubmit} action="#" method={storeInfo ? 'PATCH' : 'POST'}>
               <div className="space-y-1">
                 <div>
                   <h2 className="text-xl font-semibold  text-gray-900">{title}</h2>

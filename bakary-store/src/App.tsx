@@ -8,8 +8,6 @@ import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import SellerRegisterForm from './components/SellerRegisterForm';
 import StorePage from './pages/StorePage';
-// import CreateStore from './pages/CreateStore';
-// import UpdateStore from './pages/UpdateStore';
 
 function App() {
   return (
