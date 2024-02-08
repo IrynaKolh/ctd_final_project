@@ -98,8 +98,8 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
             <form onSubmit={handleSubmit} action="#" method={storeInfo ? 'PATCH' : 'POST'}>
               <div className="space-y-1">
                 <div>
-                  <h2 className="text-xl font-semibold  text-gray-900">{title}</h2>
-                  <p className="text-xs  leading-5 text-gray-600">
+                  <h2 className="text-xl font-semibold  text-gray-900 text-center">{title}</h2>
+                  <p className="text-xs text-center leading-5 text-gray-600">
                     This information will be displayed publicly so be careful what you share.
                   </p>
 
@@ -166,10 +166,10 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
                 </div>
 
                 <div className="pb-2">
-                  <h2 className="text-xl font-semibold  text-gray-900">
+                  <h2 className="text-xl font-semibold text-center text-gray-900">
                     Address and contact information
                   </h2>
-                  <p className="mt-1 text-xs  leading-5 text-gray-600">
+                  <p className="mt-1 text-xs text-center leading-5 text-gray-600">
                     Use your real contact information for get orders and connection with customers.
                   </p>
                   <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-6">
@@ -189,7 +189,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.contact.email}
-                          autoComplete="Your email"
+                          autoComplete="contact.email"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  sm:text-xs"
                         />
                       </div>
@@ -216,7 +216,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.contact.phone}
-                          autoComplete="+1 555 555-5555"
+                          autoComplete="contact.phone"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  sm:text-xs"
                         />
                       </div>
@@ -242,7 +242,7 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.address.country}
-                          autoComplete="country-name"
+                          autoComplete="address.country"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs  sm:text-xs"
                         >
                           <option hidden>Choose a country</option>
@@ -367,7 +367,9 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
                 </div>
 
                 <div className="pb-2">
-                  <h2 className="text-xl font-semibold text-gray-900">Social Media Information</h2>
+                  <h2 className="text-xl text-center font-semibold text-gray-900">
+                    Social Media Information
+                  </h2>
 
                   <div className="mt-2 space-y-10">
                     <div className="flex flex-col gap-1">

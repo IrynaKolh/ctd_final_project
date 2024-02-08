@@ -101,7 +101,7 @@ export interface Product {
   description: string;
   price: number;
   imageUrl: string[];
-  type: string;
+  category: string;
   storeId: string;
   _id?: string;
   createdAt?: string;
@@ -109,3 +109,5 @@ export interface Product {
   rating?: number;
   review?: [Review];
 }
+
+export type InputType = 'text' | 'number' | 'password' | 'email';

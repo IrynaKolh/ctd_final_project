@@ -12,8 +12,7 @@ const ProductSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: [true, "Please enter product price"],
-      maxlength: [5, "Product price cannot exceed 5 characters"],
-      default: 0.0,
+      maxlength: [5, "Product price cannot exceed 5 characters"],      
     },
     description: {
       type: String,
@@ -31,9 +30,9 @@ const ProductSchema = new mongoose.Schema(
     storeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Store",
-      required: [true, "User is required"],
+      required: [true, "Store is required"],
     },
-    type: {
+    category: {
       type: String,
       enum: [
         "Cakes",

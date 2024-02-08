@@ -5,36 +5,54 @@ import { FormikHelpers, useFormik } from 'formik';
 import axios from 'axios';
 import { productSchema } from '../schemas';
 import { IconPhoto } from '@tabler/icons-react';
+import PrevievImage from './PreviewImage';
+import { uploadImage } from '../utils/uploadImage';
 
 const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductModalOpen }) => {
-  const { user, setStoreInfo } = useAuth();
+  const { user } = useAuth();
   const headers = {
     Authorization: `Bearer ${user?.token}`,
   };
 
   const onSubmit = async (values: Product, actions: FormikHelpers<Product>) => {
+    const storeInfo = await axios.get('http://localhost:3000/store/my-store', { headers });
+    const store = storeInfo.data;
+    const { name, price, description, imageUrl, category } = values;
+    let urlCloud;
+
+    try {
+      if (typeof values.imageUrl === 'string') {
+        const fileResponse = await axios.get(imageUrl[0], { responseType: 'blob' });
+        const imageFile = new File([fileResponse.data], 'image.jpg', { type: 'image/jpeg' });
+        urlCloud = await uploadImage(imageFile);
+      } else {
+        urlCloud = await uploadImage(imageUrl as unknown as File);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+
     const newProduct: Product = {
-      name: values.name,
-      description: values.description,
-      price: values.price,
-      imageUrl: values.imageUrl,
-      type: values.type,
-      storeId: values.storeId,
+      name: name,
+      description: description,
+      price: price,
+      imageUrl: [urlCloud],
+      category: category,
+      storeId: store.store._id,
     };
     console.log(newProduct);
 
     try {
       let response;
       if (title === 'Edit Product') {
-        // response = await axios.patch(`http://localhost:3000/products/${productsId}`, newProduct, {
-        //   headers,
-        // });
+        response = await axios.patch(`http://localhost:3000/products/${1}`, newProduct, {
+          headers,
+        });
       } else {
         response = await axios.post('http://localhost:3000/products', newProduct, { headers });
       }
-      const storeData = response?.data;
-      localStorage.setItem('storeInfo', JSON.stringify(storeData));
-      setStoreInfo(storeData);
+      const product = response?.data;
+      console.log(product);
       actions.resetForm();
       onClose();
     } catch (error) {
@@ -42,20 +60,28 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
     }
   };
 
-  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } =
-    useFormik({
-      initialValues: {
-        name: '',
-        price: 0,
-        description: '',
-        imageUrl: [''],
-        storeId: '',
-        type: '',
-      },
-      validationSchema: productSchema,
-      onSubmit,
-      enableReinitialize: true,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+  } = useFormik({
+    initialValues: {
+      name: '',
+      price: 0,
+      description: '',
+      imageUrl: [],
+      storeId: '',
+      category: '',
+    },
+    validationSchema: productSchema,
+    onSubmit,
+    enableReinitialize: true,
+  });
 
   return (
     <>
@@ -117,6 +143,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
                         )}
                       </div>
                     </div>
+
                     <div className="col-span-full">
                       <label
                         htmlFor="description"
@@ -143,38 +170,41 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
                         )}
                       </div>
                     </div>
+
                     <div className="col-span-full">
                       <label
                         htmlFor="imageUrl"
                         className="block text-left text-base font-medium leading-5 text-gray-900"
                       >
                         Product photo
+                        <span className="text-xs  text-red-600 pl-2">*</span>
+                        <span className="text-xs  text-gray-600 pl-10">
+                          Drag and drop or click to select a file PNG, JPG, up to 5MB
+                        </span>
                       </label>
-                      <div className="mt-2 relative flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                        <div className="text-center">
+                      <div className="w-42 h-42 mt-2 relative flex justify-center gap-4 rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                        {values.imageUrl ? (
+                          <PrevievImage file={values.imageUrl} />
+                        ) : (
                           <IconPhoto
                             className="mx-auto h-12 w-12 text-gray-300"
                             aria-hidden="true"
                           />
-                          <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                            <label
-                              htmlFor="file-upload"
-                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                            >
-                              <span>Upload a file</span>
-                              <input
-                                id="file-upload"
-                                name="file-upload"
-                                type="file"
-                                className="sr-only"
-                              />
-                            </label>
-                            <p className="pl-1">or drag and drop</p>
-                          </div>
-                          <p className="text-xs leading-5 text-gray-600">
-                            PNG, JPG, GIF up to 10MB
-                          </p>
-                        </div>
+                        )}
+
+                        <input
+                          type="file"
+                          id="imageUrl"
+                          name="imageUrl"
+                          onBlur={handleBlur}
+                          onChange={(e) => {
+                            const file = e.target.files && e.target.files[0];
+                            if (file) {
+                              setFieldValue('imageUrl', file);
+                            }
+                          }}
+                        />
+
                         {errors.imageUrl && touched.imageUrl && (
                           <p className="text-red-500 text-xs text-thin text-left h-5 absolute pl-5">
                             {errors.imageUrl}
@@ -194,13 +224,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
                         </label>
                         <div className="mt-2">
                           <input
-                            type="text"
+                            type="number"
                             id="price"
                             name="price"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.price}
-                            autoComplete="Your email"
+                            inputMode="numeric"
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  sm:text-xs"
                           />
                         </div>
@@ -213,20 +243,19 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
 
                       <div className="sm:col-span-3">
                         <label
-                          htmlFor="type"
+                          htmlFor="category"
                           className="block text-left text-base font-medium leading-5 text-gray-900"
                         >
-                          Type
+                          Category
                           <span className="text-xs  text-red-600 pl-2">*</span>
                         </label>
                         <div className="mt-2 relative">
                           <select
-                            id="type"
-                            name="type"
+                            id="category"
+                            name="category"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.type}
-                            autoComplete="type"
+                            value={values.category}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xs"
                           >
                             <option hidden>Choose a type</option>

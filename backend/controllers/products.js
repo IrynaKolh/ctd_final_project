@@ -1,7 +1,6 @@
 const Product = require("../models/Product");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
-const cloudinary = require('../db/cloudinaryConfig');
 
 const getAllProducts = async (req, res) => {
   const products = await Product.find().sort(
@@ -23,28 +22,6 @@ const getProductById = async (req, res) => {
   res.status(StatusCodes.OK).json({ product });
 };
 
-const uploadProductImage = async (req, res) => {
-  if (!req.file) {
-    throw new BadRequestError("No file uploaded");
-  }
-  const productImage = req.file;
-  if (!productImage.mimetype.startsWith("image")) {
-    throw new BadRequestError("Please upload image");
-  }
-  const maxSize = 1024 * 1024; 
-  if (productImage.size > maxSize) {
-    throw new BadRequestError("Please upload image smaller than 1MB");
-  }
-
-  try {
-    const result = await cloudinary.uploader.upload(productImage.buffer);
-    res.status(StatusCodes.OK).json({ image: result.secure_url });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });
-  }
-};
-
 const createProduct = async (req, res) => {
   req.body.createdBy = req.user.userId;
   const product = await Product.create({ ...req.body });
@@ -53,12 +30,12 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const {
-    body: { name, price, description, type },
+    body: { name, price, description, category },
     user: { userId },
     params: { id: productId },
   } = req;
 
-  if (!name || !price || !description || !type) {
+  if (!name || !price || !description || !category) {
     throw new BadRequestError("Please provide all values");
   }
 

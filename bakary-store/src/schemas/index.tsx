@@ -69,15 +69,38 @@ export const productSchema = yup.object({
     .min(3, 'Product name should be atleast 3 characters long')
     .max(100, 'Product name cannot exceed 100 characters')
     .required('Please enter product name'),
-  description: yup.string().required('Please enter store description'),
+  description: yup
+    .string()
+    .min(3, 'Product description should be atleast 3 characters long')
+    .max(1000, 'Product description cannot exceed 1000 characters')
+    .required('Please enter product description'),
   price: yup
     .number()
+    .min(0, 'Price cannot be negative')
     .max(99999, 'Product price cannot exceed 99999')
     .required('Please enter product price'),
-  imageUrl: yup.array().of(yup.string()).required('Please enter product image'),
-  type: yup
+  imageUrl: yup
+    .mixed()
+    .required('Please choose product image')
+    .test('fileTypeAndSize', 'Unsupported file type or too large', async (value) => {
+      try {
+        if (!(value instanceof File)) {
+          throw new Error('Value is not a file');
+        }
+        if (!['image/jpeg', 'image/png'].includes(value.type)) {
+          throw new Error('Unsupported file type');
+        }
+        if (value.size > 1024 * 1024 * 10) {
+          throw new Error('File is too large');
+        }
+        return true;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        return error.message;
+      }
+    }),
+  category: yup
     .string()
     .oneOf(['Cakes', 'Cookies', 'Pies', 'Breads', 'Cupcakes', 'Waffles', 'Others'])
-    .default('Others'),
-  storeId: yup.string().required('Store is required'),
+    .required('Please select a category'),
 });
