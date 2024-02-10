@@ -5,13 +5,29 @@ import StoreForm from '../components/StoreForm';
 import MyStoreInfo from '../components/MyStoreInfo';
 import storeBg from '../assets/store-bg.jpg';
 import ProductForm from '../components/ProductForm';
+import { ProductResponse } from '../models/interfaces';
+import MessegeInfo from '../components/MessegeInfo';
 
 const StorePage: React.FC = () => {
   const [isOpenStoreModal, setisOpenStoreModal] = useState(false);
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
   const { user, store, setStoreInfo } = useAuth();
+  const [message, setMessage] = useState<string | null>(null);
   const headers = {
     Authorization: `Bearer ${user?.token}`,
+  };
+  const [products, setProducts] = useState<ProductResponse[] | []>([]);
+  const [needUpdate, setNeedUpdate] = useState(false);
+
+  const deleteProduct = async (productId: string) => {
+    try {
+      await axios.delete(`http://localhost:3000/products/${productId}`, { headers });
+      const updatedProducts = products.filter((product) => product._id !== productId);
+      setProducts(updatedProducts);
+      setMessage('Product deleted successfully');
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
   };
 
   useEffect(() => {
@@ -21,6 +37,7 @@ const StorePage: React.FC = () => {
           const response = await axios.get('http://localhost:3000/store/my-store', { headers });
           setStoreInfo(response.data);
           localStorage.setItem('storeInfo', JSON.stringify(response.data));
+          setNeedUpdate(false);
         } catch (error) {
           console.error('Error fetching shop info:', error);
         }
@@ -29,6 +46,18 @@ const StorePage: React.FC = () => {
 
     checkShop();
   }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/products/my-products', { headers });
+        setProducts(response.data.products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    fetchProducts();
+  }, [needUpdate]);
 
   const handleOpenStoreModal = () => {
     setisOpenStoreModal(true);
@@ -63,6 +92,7 @@ const StorePage: React.FC = () => {
             <ProductForm
               isAddProductModalOpen={isAddProductModalOpen}
               onClose={handleCloseAddProductModal}
+              setNeedUpdate={setNeedUpdate}
               title="Add Product"
             ></ProductForm>
             <button
@@ -79,7 +109,12 @@ const StorePage: React.FC = () => {
               storeInfo={store.store}
             />
           </div>
-          <MyStoreInfo storeInfo={store.store}></MyStoreInfo>
+          <MyStoreInfo
+            storeInfo={store.store}
+            products={products}
+            onDelete={deleteProduct}
+          ></MyStoreInfo>
+          {message && <MessegeInfo message={message} onClose={() => setMessage(null)} />}
         </>
       ) : (
         <div>

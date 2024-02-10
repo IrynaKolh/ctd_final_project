@@ -8,7 +8,12 @@ import { IconPhoto } from '@tabler/icons-react';
 import PrevievImage from './PreviewImage';
 import { uploadImage } from '../utils/uploadImage';
 
-const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductModalOpen }) => {
+const ProductForm: React.FC<ProductFormProps> = ({
+  title,
+  onClose,
+  isAddProductModalOpen,
+  setNeedUpdate,
+}) => {
   const { user } = useAuth();
   const headers = {
     Authorization: `Bearer ${user?.token}`,
@@ -40,7 +45,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
       category: category,
       storeId: store.store._id,
     };
-    console.log(newProduct);
 
     try {
       let response;
@@ -53,6 +57,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
       }
       const product = response?.data;
       console.log(product);
+      setNeedUpdate(true);
       actions.resetForm();
       onClose();
     } catch (error) {
@@ -74,7 +79,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
       name: '',
       price: 0,
       description: '',
-      imageUrl: [],
+      imageUrl: [''],
       storeId: '',
       category: '',
     },
@@ -184,7 +189,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
                       </label>
                       <div className="w-42 h-42 mt-2 relative flex justify-center gap-4 rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         {values.imageUrl ? (
-                          <PrevievImage file={values.imageUrl} />
+                          <PrevievImage file={values.imageUrl[0] as unknown as File} />
                         ) : (
                           <IconPhoto
                             className="mx-auto h-12 w-12 text-gray-300"
