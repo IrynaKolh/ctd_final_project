@@ -13,6 +13,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onClose,
   isAddProductModalOpen,
   setNeedUpdate,
+  productInfo,
 }) => {
   const { user } = useAuth();
   const headers = {
@@ -37,6 +38,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
       console.error('Error uploading image:', error);
     }
 
+    if (productInfo) {
+      urlCloud = productInfo.imageUrl[0];
+    }
     const newProduct: Product = {
       name: name,
       description: description,
@@ -49,9 +53,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
     try {
       let response;
       if (title === 'Edit Product') {
-        response = await axios.patch(`http://localhost:3000/products/${1}`, newProduct, {
-          headers,
-        });
+        response = await axios.patch(
+          `http://localhost:3000/products/${productInfo?._id}`,
+          newProduct,
+          {
+            headers,
+          }
+        );
       } else {
         response = await axios.post('http://localhost:3000/products', newProduct, { headers });
       }
@@ -75,7 +83,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     handleSubmit,
     setFieldValue,
   } = useFormik({
-    initialValues: {
+    initialValues: productInfo || {
       name: '',
       price: 0,
       description: '',

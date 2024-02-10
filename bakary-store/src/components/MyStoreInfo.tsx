@@ -1,8 +1,27 @@
-import React from 'react';
-import { MyStoreInfoProps } from '../models/interfaces';
+import React, { useState } from 'react';
+import { MyStoreInfoProps, ProductResponse } from '../models/interfaces';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
+import ProductForm from './ProductForm';
 
-const MyStoreInfo: React.FC<MyStoreInfoProps> = ({ storeInfo, products, onDelete }) => {
+const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
+  storeInfo,
+  products,
+  onDelete,
+  setNeedUpdate,
+}) => {
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<ProductResponse | null>(null);
+
+  const handleOpenAddProductModal = (product: ProductResponse) => {
+    setSelectedProduct(product);
+    setIsAddProductModalOpen(true);
+  };
+
+  const handleCloseAddProductModal = () => {
+    setSelectedProduct(null);
+    setIsAddProductModalOpen(false);
+  };
+
   return (
     <>
       {storeInfo ? (
@@ -53,9 +72,19 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({ storeInfo, products, onDelete
                     {/* <p className="text-sm leading-6 text-gray-900">{product.createdAt}</p>
                     <p className="text-sm leading-6 text-gray-900">{product.updatedAt}</p> */}
                     <div>
-                      <button className="text-white px-3 mr-3 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500">
+                      <button
+                        onClick={() => handleOpenAddProductModal(product)}
+                        className="text-white px-3 mr-3 border-2 border-transparent p-1 rounded text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500"
+                      >
                         <IconEdit size={26} strokeWidth={1.5} color="#6b7280" />
                       </button>
+                      <ProductForm
+                        isAddProductModalOpen={isAddProductModalOpen}
+                        onClose={handleCloseAddProductModal}
+                        setNeedUpdate={setNeedUpdate}
+                        productInfo={selectedProduct}
+                        title="Edit Product"
+                      ></ProductForm>
                       <button
                         type="button"
                         onClick={() => onDelete(product._id)}

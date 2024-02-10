@@ -84,6 +84,7 @@ export interface MyStoreInfoProps {
   storeInfo: StoreInfo | null;
   products: ProductResponse[] | [];
   onDelete: (productId: string) => void;
+  setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ProductFormProps {
@@ -91,6 +92,7 @@ export interface ProductFormProps {
   isAddProductModalOpen: boolean;
   title: string;
   setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  productInfo: ProductResponse | null;
 }
 
 type Review = {

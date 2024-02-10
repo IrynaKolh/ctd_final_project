@@ -46,27 +46,35 @@ const createProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  const {
-    body: { name, price, description, category },
-    user: { userId },
-    params: { id: productId },
-  } = req;
+  try {
+    const userId = req.user.userId;
+    const productId = req.params.id;
+    const store = await Store.findOne({ owner: userId });
 
-  if (!name || !price || !description || !category) {
-    throw new BadRequestError("Please provide all values");
+    if (!store) {
+      throw new NotFoundError(`Store not found for user: ${userId}`);
+    }
+    const { name, price, description, category, imageUrl, storeId } = req.body;
+
+    if (!name || !price || !description || !category || !imageUrl || !storeId) {
+      throw new BadRequestError("Please provide all values");
+    }
+
+    const product = await Product.findOneAndUpdate(
+      { _id: productId, storeId: store._id },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      throw new NotFoundError(`No product with id: ${productId}`);
+    }
+    res.status(StatusCodes.OK).json({ product });
+    // res.send("Product has been successfully updated");
+  } catch (err) {
+    console.error("Error fetching products:", err);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });
   }
-
-  const product = await Product.findOneAndUpdate(
-    { _id: productId, createdBy: userId },
-    req.body,
-    { new: true, runValidators: true }
-  );
-
-  if (!product) {
-    throw new NotFoundError(`No product with id: ${productId}`);
-  }
-  res.status(StatusCodes.OK).json({ product });
-  // res.send("Product has been successfully updated");
 };
 
 const deleteProduct = async (req, res) => {
@@ -89,10 +97,9 @@ const deleteProduct = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: "Product has been successfully deleted" });
   } catch (err) {
-    console.error("Error fetching products:", err);  
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });  
+    console.error("Error fetching products:", err);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });
   }
-
 };
 
 module.exports = {

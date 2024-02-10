@@ -37,7 +37,6 @@ const StorePage: React.FC = () => {
           const response = await axios.get('http://localhost:3000/store/my-store', { headers });
           setStoreInfo(response.data);
           localStorage.setItem('storeInfo', JSON.stringify(response.data));
-          setNeedUpdate(false);
         } catch (error) {
           console.error('Error fetching shop info:', error);
         }
@@ -52,6 +51,7 @@ const StorePage: React.FC = () => {
       try {
         const response = await axios.get('http://localhost:3000/products/my-products', { headers });
         setProducts(response.data.products);
+        setNeedUpdate(false);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -94,6 +94,7 @@ const StorePage: React.FC = () => {
               onClose={handleCloseAddProductModal}
               setNeedUpdate={setNeedUpdate}
               title="Add Product"
+              productInfo={null}
             ></ProductForm>
             <button
               type="button"
@@ -113,6 +114,7 @@ const StorePage: React.FC = () => {
             storeInfo={store.store}
             products={products}
             onDelete={deleteProduct}
+            setNeedUpdate={setNeedUpdate}
           ></MyStoreInfo>
           {message && <MessegeInfo message={message} onClose={() => setMessage(null)} />}
         </>
