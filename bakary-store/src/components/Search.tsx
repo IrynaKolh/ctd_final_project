@@ -17,7 +17,7 @@ const Search: React.FC<SearchProps> = ({ onSearch }) => {
         value={searchTerm}
         onChange={handleChange}
         placeholder="Search..."
-        className="border border-gray-300 px-3 py-2 rounded-md mr-2 focus:outline-none focus:border-yellow-700 active:border-yellow-700"
+        className="border border-gray-300 px-3 py-2 rounded-md mr-2 focus:outline-none focus:border-blue-500"
       />
       {/* <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
         Search

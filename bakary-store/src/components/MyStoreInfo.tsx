@@ -58,7 +58,7 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
                         {product.name}
                       </p>
                     </div>
-                    <div className="w-2/6 flex justify-start">
+                    <div className="w-2/6 flex justify-start truncate">
                       <p className="text-sm text-left font-semibold leading-6 text-gray-900">
                         {product.description}
                       </p>

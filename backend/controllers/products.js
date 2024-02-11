@@ -17,15 +17,18 @@ const getAllProducts = async (req, res) => {
   } else {
     result = result.sort("createdAt");
   }
+
+  const productsCount = await Product.countDocuments(queryObject);
+
   // limit and skip - pagination
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
+  const limit = Number(req.query.limit) || 12;
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
 
   const products = await result;
-  res.status(StatusCodes.OK).json({ products, count: products.length });
+  res.status(StatusCodes.OK).json({ products, count: productsCount });
 };
 
 const getMyProducts = async (req, res) => {

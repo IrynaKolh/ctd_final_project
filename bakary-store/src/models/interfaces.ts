@@ -123,9 +123,13 @@ export type InputType = 'text' | 'number' | 'password' | 'email';
 export interface PaginatioProps {
   currentPage: number;
   totalPages: number;
-  // onPageChange: (arg0: number) => void;
+  onPageChange: (pageTerm: number) => void;
 }
 
 export type SearchProps = {
   onSearch: (searchTerm: string) => void;
+};
+
+export type SortProps = {
+  onSort: (sortTerm: string) => void;
 };

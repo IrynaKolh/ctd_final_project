@@ -4,12 +4,15 @@ import { ProductResponse } from '../models/interfaces';
 import axios from 'axios';
 import Pagination from '../components/Pagination';
 import Search from '../components/Search';
+import Sorting from '../components/Sorting';
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<ProductResponse[] | []>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [amount, setAmount] = useState(0);
   const [searchInput, setSearchInput] = useState('');
+  const [sortInput, setSortInput] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = (searchTerm: string) => {
     // Делаем что-то с поисковым запросом, например, отправляем его на бэкенд
@@ -17,29 +20,41 @@ const ProductsPage: React.FC = () => {
     setSearchInput(searchTerm);
   };
 
+  const onSort = (sortTerm: string) => {
+    console.log('onSort:', sortTerm);
+    setSortInput(sortTerm);
+  };
+
+  const handlePage = (pageTerm: number) => {
+    console.log('handlePage:', pageTerm);
+    setCurrentPage(pageTerm);
+  };
+
   useEffect(() => {
     const getProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products?name=${searchInput}&sort=createdAt&page=1&limit=10`
+          `http://localhost:3000/products?name=${searchInput}&sort=${sortInput}&page=${currentPage}&limit=12`
         );
         setProducts(response.data.products);
         setAmount(response.data.count);
+        console.log(response.data.count);
       } catch (error) {
         console.error('Error fetching shop info:', error);
       }
     };
 
     getProducts();
-  }, [searchInput]);
+  }, [searchInput, sortInput, currentPage]);
 
   //style={{ backgroundImage: `url(${productBg})` }}
 
   return (
     <div className="bg-cover bg-center min-h-lvh">
       <div className="mx-auto max-w-2xl p-4 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-4">
-        <div>
+        <div className="flex">
           <Search onSearch={handleSearch} />
+          <Sorting onSort={onSort} />
         </div>
 
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
@@ -68,7 +83,11 @@ const ProductsPage: React.FC = () => {
             </div>
           ))}
         </div>
-        <Pagination totalPages={amount} currentPage={1} />
+        <Pagination
+          totalPages={Math.ceil(amount / 12)}
+          currentPage={currentPage}
+          onPageChange={handlePage}
+        />
       </div>
     </div>
   );

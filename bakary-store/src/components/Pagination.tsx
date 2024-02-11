@@ -2,8 +2,9 @@ import React from 'react';
 // import { IconCaretLeft, IconCaretRight } from '@tabler/icons-react';
 import { PaginatioProps } from '../models/interfaces';
 
-const Pagination: React.FC<PaginatioProps> = ({ currentPage, totalPages }) => {
-  const range = (from = 1, to = totalPages / 12, step = 1) => {
+const Pagination: React.FC<PaginatioProps> = ({ currentPage, totalPages, onPageChange }) => {
+  console.log(totalPages);
+  const range = (from = 1, to = totalPages, step = 1) => {
     let i = from;
     const range = [];
 
@@ -16,9 +17,9 @@ const Pagination: React.FC<PaginatioProps> = ({ currentPage, totalPages }) => {
   };
 
   const handlePageChange = (page: number) => {
-    // if (page !== currentPage && page > 0 && page <= totalPages) {
-    //   onPageChange(page);
-    // }
+    if (page !== currentPage && page > 0 && page <= totalPages) {
+      onPageChange(page);
+    }
     console.log(page);
   };
 

@@ -75,7 +75,10 @@ const StorePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-cover bg-center h-lvh pt-5" style={{ backgroundImage: `url(${storeBg})` }}>
+    <div
+      className="bg-cover bg-center pt-5 min-h-lvh"
+      style={{ backgroundImage: `url(${storeBg})` }}
+    >
       <h2 className="inline-block w-2/5 mx-auto mb-3 text-5xl text-yellow-50 italic tracking-widest font-bold p-5 text-center">
         {store?.store?.name}
       </h2>
