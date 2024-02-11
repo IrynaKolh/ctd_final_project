@@ -27,7 +27,7 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
       {storeInfo ? (
         <>
           <div className="flex items-center justify-center">
-            <p className="text-xl text-gray-500">{storeInfo.description}</p>
+            <p className="text-xl text-yellow-50 pb-2">{storeInfo.description}</p>
           </div>
           <div className="w-2/3 m-auto">
             {/* <h3>Products List</h3> */}
