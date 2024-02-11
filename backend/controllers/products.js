@@ -4,11 +4,15 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllProducts = async (req, res) => {
-  const { name, sort } = req.query;
+  const { name, sort, category } = req.query;
   const queryObject = {};
-   // if name is exists in query
-   if (name) {
+  // if name is exists in query
+  if (name) {
     queryObject.name = { $regex: name, $options: "i" };
+  }
+  //  if category is exists in query
+  if (category) {
+    queryObject.category = category;
   }
   let result = Product.find(queryObject);
   if (sort) {
@@ -65,7 +69,7 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
   req.body.createdBy = req.user.userId;
   const product = await Product.create({ ...req.body });
-  res.status(StatusCodes.CREATED).json({ product });
+  res.status(StatusCodes.CREATED).json({ product,  msg: "Product has been successfully created" });
 };
 
 const updateProduct = async (req, res) => {
@@ -92,7 +96,7 @@ const updateProduct = async (req, res) => {
     if (!product) {
       throw new NotFoundError(`No product with id: ${productId}`);
     }
-    res.status(StatusCodes.OK).json({ product });
+    res.status(StatusCodes.OK).json({ product, msg: "Product has been successfully updated" });
     // res.send("Product has been successfully updated");
   } catch (err) {
     console.error("Error fetching products:", err);

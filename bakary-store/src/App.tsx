@@ -8,6 +8,7 @@ import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import SellerRegisterForm from './components/SellerRegisterForm';
 import StorePage from './pages/StorePage';
+import ProductPage from './pages/ProductPage';
 
 function App() {
   return (
@@ -19,9 +20,8 @@ function App() {
           <Route path="/registration" element={<RegistrationForm />} />
           <Route path="/seller" element={<SellerRegisterForm />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductPage />} />
           <Route path="/my-store" element={<StorePage />} />
-          {/* <Route path="/create-store" element={<CreateStore />} />
-          <Route path="/update-store" element={<UpdateStore />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

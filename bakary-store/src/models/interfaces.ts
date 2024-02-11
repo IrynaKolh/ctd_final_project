@@ -133,3 +133,7 @@ export type SearchProps = {
 export type SortProps = {
   onSort: (sortTerm: string) => void;
 };
+
+export type FiltersProps = {
+  onFilter: (filterTerm: string) => void;
+};

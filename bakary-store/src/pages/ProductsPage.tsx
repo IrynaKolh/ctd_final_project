@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-// import productBg from '../assets/product-bg.jpg';
 import { ProductResponse } from '../models/interfaces';
 import axios from 'axios';
 import Pagination from '../components/Pagination';
 import Search from '../components/Search';
 import Sorting from '../components/Sorting';
+import Filters from '../components/Filters';
+import { Link } from 'react-router-dom';
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<ProductResponse[] | []>([]);
@@ -13,28 +14,29 @@ const ProductsPage: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
   const [sortInput, setSortInput] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const handleSearch = (searchTerm: string) => {
-    // Делаем что-то с поисковым запросом, например, отправляем его на бэкенд
-    console.log('Search term:', searchTerm);
     setSearchInput(searchTerm);
   };
 
   const onSort = (sortTerm: string) => {
-    console.log('onSort:', sortTerm);
     setSortInput(sortTerm);
   };
 
   const handlePage = (pageTerm: number) => {
-    console.log('handlePage:', pageTerm);
     setCurrentPage(pageTerm);
+  };
+
+  const handleFilter = (filterTerm: string) => {
+    setSelectedCategory(filterTerm);
   };
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products?name=${searchInput}&sort=${sortInput}&page=${currentPage}&limit=12`
+          `http://localhost:3000/products?name=${searchInput}&category=${selectedCategory}&sort=${sortInput}&page=${currentPage}&limit=12`
         );
         setProducts(response.data.products);
         setAmount(response.data.count);
@@ -45,16 +47,15 @@ const ProductsPage: React.FC = () => {
     };
 
     getProducts();
-  }, [searchInput, sortInput, currentPage]);
-
-  //style={{ backgroundImage: `url(${productBg})` }}
+  }, [searchInput, sortInput, currentPage, selectedCategory]);
 
   return (
     <div className="bg-cover bg-center min-h-lvh">
       <div className="mx-auto max-w-2xl p-4 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-4">
-        <div className="flex">
+        <div className="flex gap-3 text-gray-500">
           <Search onSearch={handleSearch} />
           <Sorting onSort={onSort} />
+          <Filters onFilter={handleFilter} />
         </div>
 
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
@@ -69,16 +70,16 @@ const ProductsPage: React.FC = () => {
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
               </div>
-              <div className="m-4 flex justify-between">
+              <div className="m-4 flex justify-between gap-2">
                 <div>
                   <h3 className="text-md text-gray-700 font-bold">
-                    <a href="#">
+                    <Link to={`/products/${product._id}`}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {product.name.trim()}
-                    </a>
+                    </Link>
                   </h3>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{product.price}$</p>
+                <p className="text-sm font-medium text-yellow-900">{product.price}$</p>
               </div>
             </div>
           ))}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MyStoreInfoProps, ProductResponse } from '../models/interfaces';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import ProductForm from './ProductForm';
+import { Link } from 'react-router-dom';
 
 const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
   storeInfo,
@@ -26,10 +27,10 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
     <>
       {storeInfo ? (
         <>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center w-3/4 m-auto text-justify my-2">
             <p className="text-xl text-yellow-50 pb-2">{storeInfo.description}</p>
           </div>
-          <div className="w-2/3 m-auto">
+          <div className="w-3/4 m-auto">
             {/* <h3>Products List</h3> */}
             {products?.length > 0 ? (
               <ul
@@ -41,18 +42,19 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
                     key={product._id}
                     className="w-full flex justify-between items-center gap-x-6 py-2"
                   >
-                    <img
-                      className="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover object-center"
-                      src={
-                        Array.isArray(product.imageUrl) && product.imageUrl.length > 0
-                          ? product.imageUrl[0]
-                          : typeof product.imageUrl === 'string'
-                            ? product.imageUrl
-                            : ''
-                      }
-                      alt=""
-                    />
-
+                    <Link to={`/products/${product._id}`}>
+                      <img
+                        className="h-12 w-12 flex-none rounded-full bg-gray-50 object-cover object-center"
+                        src={
+                          Array.isArray(product.imageUrl) && product.imageUrl.length > 0
+                            ? product.imageUrl[0]
+                            : typeof product.imageUrl === 'string'
+                              ? product.imageUrl
+                              : ''
+                        }
+                        alt=""
+                      />
+                    </Link>
                     <div className="w-1/6 flex items-start">
                       <p className="text-sm text-left font-semibold leading-6 text-gray-900">
                         {product.name}
@@ -97,7 +99,7 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
                 ))}
               </ul>
             ) : (
-              <p className="text-xl text-gray-500 pt-10">No products found</p>
+              <p className="text-2xl text-yellow-50 pt-10">No products found</p>
             )}
           </div>
         </>
