@@ -125,3 +125,7 @@ export interface PaginatioProps {
   totalPages: number;
   // onPageChange: (arg0: number) => void;
 }
+
+export type SearchProps = {
+  onSearch: (searchTerm: string) => void;
+};

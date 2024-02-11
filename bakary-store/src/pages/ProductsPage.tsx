@@ -3,16 +3,26 @@ import React, { useEffect, useState } from 'react';
 import { ProductResponse } from '../models/interfaces';
 import axios from 'axios';
 import Pagination from '../components/Pagination';
+import Search from '../components/Search';
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<ProductResponse[] | []>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [amount, setAmount] = useState(0);
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearch = (searchTerm: string) => {
+    // Делаем что-то с поисковым запросом, например, отправляем его на бэкенд
+    console.log('Search term:', searchTerm);
+    setSearchInput(searchTerm);
+  };
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/products');
+        const response = await axios.get(
+          `http://localhost:3000/products?name=${searchInput}&sort=createdAt&page=1&limit=10`
+        );
         setProducts(response.data.products);
         setAmount(response.data.count);
       } catch (error) {
@@ -21,13 +31,17 @@ const ProductsPage: React.FC = () => {
     };
 
     getProducts();
-  }, []);
+  }, [searchInput]);
 
   //style={{ backgroundImage: `url(${productBg})` }}
 
   return (
     <div className="bg-cover bg-center min-h-lvh">
       <div className="mx-auto max-w-2xl p-4 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-4">
+        <div>
+          <Search onSearch={handleSearch} />
+        </div>
+
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Products</h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
