@@ -4,7 +4,8 @@
   "description": "Node/Express Final Project",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "Iryna Kolhanova",
   "license": "ISC",
