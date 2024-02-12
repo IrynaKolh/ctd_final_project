@@ -35,7 +35,7 @@ const MyStoreInfo: React.FC<MyStoreInfoProps> = ({
             {products?.length > 0 ? (
               <ul
                 role="list"
-                className="divide-y px-5 divide-gray-900 bg-white opacity-85 rounded-lg drop-shadow-md"
+                className="divide-y px-5 divide-gray-900 bg-white rounded-lg drop-shadow-md"
               >
                 {products.map((product) => (
                   <li

@@ -4,11 +4,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ProductResponse } from '../models/interfaces';
 import axios from 'axios';
 import { IconArrowLeft } from '@tabler/icons-react';
+import { useAuth } from '../utils/useAuth';
 
 const ProductPage: React.FC = () => {
   const param = useParams();
   const [product, setProduct] = useState<ProductResponse | null>(null);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -50,9 +52,11 @@ const ProductPage: React.FC = () => {
           <p className="text-gray-900">{product?.description}</p>
           <div className="flex justify-around">
             <p className="text-lg font-semibold mb-2">Price: {product?.price}$</p>
-            <button className="text-white bg-yellow-700 border-2 border-transparent p-1 text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500 rounded-md px-3.5 py-2.5 font-semibold shadow-sm">
-              Order
-            </button>
+            {user && (
+              <button className="text-white bg-yellow-700 border-2 border-transparent p-1 text-base hover:border-yellow-700 hover:bg-white hover:text-gray-500 rounded-md px-3.5 py-2.5 font-semibold shadow-sm">
+                Order
+              </button>
+            )}
           </div>
         </div>
       </div>

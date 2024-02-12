@@ -43,10 +43,19 @@ const getMyProducts = async (req, res) => {
     if (!store) {
       throw new NotFoundError(`Store not found for user: ${userId}`);
     }
-    const products = await Product.find({ storeId: store._id }).sort(
+
+    const productsCount = await Product.countDocuments({ storeId: store._id });
+     // limit and skip - pagination
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    let result = Product.find({ storeId: store._id }).sort(
       "createdAt"
     );
-    res.status(StatusCodes.OK).json({ products, count: products.length });
+    result = result.skip(skip).limit(limit);
+    
+    const products = await result;
+    res.status(StatusCodes.OK).json({ products, count: productsCount });
   } catch (err) {
     console.error("Error fetching products:", err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ msg: err.message });

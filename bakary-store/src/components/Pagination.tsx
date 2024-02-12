@@ -3,7 +3,6 @@ import React from 'react';
 import { PaginatioProps } from '../models/interfaces';
 
 const Pagination: React.FC<PaginatioProps> = ({ currentPage, totalPages, onPageChange }) => {
-  console.log(totalPages);
   const range = (from = 1, to = totalPages, step = 1) => {
     let i = from;
     const range = [];
@@ -20,11 +19,10 @@ const Pagination: React.FC<PaginatioProps> = ({ currentPage, totalPages, onPageC
     if (page !== currentPage && page > 0 && page <= totalPages) {
       onPageChange(page);
     }
-    console.log(page);
   };
 
   return (
-    <div className="flex justify-center items-center my-4">
+    <div className="flex justify-center items-center py-4">
       <button
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}

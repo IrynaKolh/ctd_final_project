@@ -7,6 +7,7 @@ import storeBg from '../assets/store-bg.jpg';
 import ProductForm from '../components/ProductForm';
 import { ProductResponse } from '../models/interfaces';
 import MessegeInfo from '../components/MessegeInfo';
+import Pagination from '../components/Pagination';
 
 const StorePage: React.FC = () => {
   const [isOpenStoreModal, setisOpenStoreModal] = useState(false);
@@ -18,6 +19,8 @@ const StorePage: React.FC = () => {
   };
   const [products, setProducts] = useState<ProductResponse[] | []>([]);
   const [needUpdate, setNeedUpdate] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const deleteProduct = async (productId: string) => {
     try {
@@ -49,15 +52,19 @@ const StorePage: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/products/my-products', { headers });
+        const response = await axios.get(
+          `http://localhost:3000/products/my-products?page=${currentPage}&limit=10`,
+          { headers }
+        );
         setProducts(response.data.products);
+        setAmount(response.data.count);
         setNeedUpdate(false);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
     fetchProducts();
-  }, [needUpdate]);
+  }, [needUpdate, currentPage]);
 
   const handleOpenStoreModal = () => {
     setisOpenStoreModal(true);
@@ -74,9 +81,13 @@ const StorePage: React.FC = () => {
     setIsAddProductModalOpen(false);
   };
 
+  const handlePage = (pageTerm: number) => {
+    setCurrentPage(pageTerm);
+  };
+
   return (
     <div
-      className="bg-cover bg-center pt-5 min-h-lvh"
+      className="bg-cover bg-center pt-5 min-h-svh"
       style={{ backgroundImage: `url(${storeBg})` }}
     >
       <h2 className="inline-block w-2/5 mx-auto mb-3 text-5xl text-yellow-50 italic tracking-widest font-bold p-5 text-center">
@@ -120,6 +131,13 @@ const StorePage: React.FC = () => {
             setNeedUpdate={setNeedUpdate}
           ></MyStoreInfo>
           {message && <MessegeInfo message={message} onClose={() => setMessage(null)} />}
+          {products.length > 0 && (
+            <Pagination
+              totalPages={Math.ceil(amount / 10)}
+              currentPage={currentPage}
+              onPageChange={handlePage}
+            />
+          )}
         </>
       ) : (
         <div>

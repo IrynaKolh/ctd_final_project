@@ -26,21 +26,22 @@ const ProductForm: React.FC<ProductFormProps> = ({
     const { name, price, description, imageUrl, category } = values;
     let urlCloud;
 
-    try {
-      if (typeof values.imageUrl === 'string') {
-        const fileResponse = await axios.get(imageUrl[0], { responseType: 'blob' });
-        const imageFile = new File([fileResponse.data], 'image.jpg', { type: 'image/jpeg' });
-        urlCloud = await uploadImage(imageFile);
-      } else {
-        urlCloud = await uploadImage(imageUrl as unknown as File);
+    if (productInfo && !imageUrl) {
+      urlCloud = productInfo.imageUrl[0];
+    } else {
+      try {
+        if (typeof values.imageUrl === 'string') {
+          const fileResponse = await axios.get(imageUrl[0], { responseType: 'blob' });
+          const imageFile = new File([fileResponse.data], 'image.jpg', { type: 'image/jpeg' });
+          urlCloud = await uploadImage(imageFile);
+        } else {
+          urlCloud = await uploadImage(imageUrl as unknown as File);
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
       }
-    } catch (error) {
-      console.error('Error uploading image:', error);
     }
 
-    if (productInfo) {
-      urlCloud = productInfo.imageUrl[0];
-    }
     const newProduct: Product = {
       name: name,
       description: description,

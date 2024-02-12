@@ -1,15 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
+import Footer from './Footer';
 
 const Layout: React.FC = () => {
   return (
-    <>
+    <div className="layout">
       <Header />
-      <main>
+      <main className="main-content">
         <Outlet />
       </main>
-      <footer>2023</footer>
-    </>
+      <Footer />
+    </div>
   );
 };
 

@@ -16,10 +16,10 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex justify-around items-center">
+    <header className="my-header flex justify-around items-center sticky top-0 z-50 bg-white h-16 border-b border-gray-400">
       <div>
         <NavLink to="/">
-          <img src={logo} alt="HM Bakary" className="h-12 rounded" />
+          <img src={logo} alt="HM Bakary" className="rounded h-14" />
         </NavLink>
       </div>
 
