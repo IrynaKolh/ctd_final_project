@@ -61,8 +61,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
       } else {
         response = await axios.post(`${URL}/products`, newProduct, { headers });
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const product = response?.data;
+      console.log(product);
       setNeedUpdate(true);
       actions.resetForm();
       onClose();
