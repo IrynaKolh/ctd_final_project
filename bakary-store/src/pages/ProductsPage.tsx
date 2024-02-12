@@ -40,7 +40,6 @@ const ProductsPage: React.FC = () => {
         );
         setProducts(response.data.products);
         setAmount(response.data.count);
-        console.log(response.data.count);
       } catch (error) {
         console.error('Error fetching shop info:', error);
       }

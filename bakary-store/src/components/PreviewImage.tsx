@@ -8,7 +8,6 @@ const PreviewImage: React.FC<{ file: File }> = ({ file }) => {
     if (file instanceof Blob) {
       reader.onload = () => {
         setPreview(reader.result as string);
-        console.log(preview);
       };
       reader.readAsDataURL(file);
     }
