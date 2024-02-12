@@ -12,6 +12,9 @@ const storeRouter = require("./routes/store");
 const authMiddleware = require("./middlewares/authentication");
 const notFoundMiddleware = require("./middlewares/not-found");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDoc = YAML.load("./swagger.yaml");
 
 const app = express();
 app.use(express.json());
@@ -33,8 +36,9 @@ app.use(xss());
 
 // routes
 app.get("/", (req, res) => {
-  res.send("products api");
+  res.send("<h1>Products api</h1> <a href='/docs'>Documentation</a>");
 });
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use("/auth", authRouter);
 app.use("/products", productsRouter);
 app.use('/store', storeRouter)
