@@ -5,6 +5,7 @@ import { StoreFormProps, StoreInfo } from '../models/interfaces';
 import { useAuth } from '../utils/useAuth';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { URL } from '../utils/constants';
 
 const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModal, onClose }) => {
   const navigate = useNavigate();
@@ -25,11 +26,11 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
     try {
       let response;
       if (title === 'Update Store') {
-        response = await axios.patch(`http://localhost:3000/store/${storeInfo?._id}`, newStore, {
+        response = await axios.patch(`${URL}/store/${storeInfo?._id}`, newStore, {
           headers,
         });
       } else {
-        response = await axios.post('http://localhost:3000/store', newStore, { headers });
+        response = await axios.post(`${URL}/store`, newStore, { headers });
       }
       const storeData = response?.data;
       localStorage.setItem('storeInfo', JSON.stringify(storeData));

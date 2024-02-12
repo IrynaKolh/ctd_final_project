@@ -8,6 +8,7 @@ import ProductForm from '../components/ProductForm';
 import { ProductResponse } from '../models/interfaces';
 import MessegeInfo from '../components/MessegeInfo';
 import Pagination from '../components/Pagination';
+import { URL } from '../utils/constants';
 
 const StorePage: React.FC = () => {
   const [isOpenStoreModal, setisOpenStoreModal] = useState(false);
@@ -24,7 +25,7 @@ const StorePage: React.FC = () => {
 
   const deleteProduct = async (productId: string) => {
     try {
-      await axios.delete(`http://localhost:3000/products/${productId}`, { headers });
+      await axios.delete(`${URL}/products/${productId}`, { headers });
       const updatedProducts = products.filter((product) => product._id !== productId);
       setProducts(updatedProducts);
       setMessage('Product deleted successfully');
@@ -37,7 +38,7 @@ const StorePage: React.FC = () => {
     const checkShop = async () => {
       if (!store) {
         try {
-          const response = await axios.get('http://localhost:3000/store/my-store', { headers });
+          const response = await axios.get(`${URL}/store/my-store`, { headers });
           setStoreInfo(response.data);
           localStorage.setItem('storeInfo', JSON.stringify(response.data));
         } catch (error) {
@@ -53,7 +54,7 @@ const StorePage: React.FC = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products/my-products?page=${currentPage}&limit=10`,
+          `${URL}/products/my-products?page=${currentPage}&limit=10`,
           { headers }
         );
         setProducts(response.data.products);

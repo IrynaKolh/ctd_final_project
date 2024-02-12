@@ -5,6 +5,7 @@ import { ProductResponse } from '../models/interfaces';
 import axios from 'axios';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useAuth } from '../utils/useAuth';
+import { URL } from '../utils/constants';
 
 const ProductPage: React.FC = () => {
   const param = useParams();
@@ -15,7 +16,7 @@ const ProductPage: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/products/${param.id}`);
+        const response = await axios.get(`${URL}/products/${param.id}`);
         setProduct(response.data.product);
       } catch (error) {
         console.error('Error fetching products:', error);

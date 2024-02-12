@@ -6,10 +6,10 @@ import Search from '../components/Search';
 import Sorting from '../components/Sorting';
 import Filters from '../components/Filters';
 import { Link } from 'react-router-dom';
+import { URL } from '../utils/constants';
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<ProductResponse[] | []>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [amount, setAmount] = useState(0);
   const [searchInput, setSearchInput] = useState('');
   const [sortInput, setSortInput] = useState('');
@@ -36,7 +36,7 @@ const ProductsPage: React.FC = () => {
     const getProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products?name=${searchInput}&category=${selectedCategory}&sort=${sortInput}&page=${currentPage}&limit=12`
+          `${URL}/products?name=${searchInput}&category=${selectedCategory}&sort=${sortInput}&page=${currentPage}&limit=12`
         );
         setProducts(response.data.products);
         setAmount(response.data.count);
