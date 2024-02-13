@@ -7,7 +7,6 @@ import { productSchema } from '../schemas';
 import { IconPhoto } from '@tabler/icons-react';
 import PrevievImage from './PreviewImage';
 import { uploadImage } from '../utils/uploadImage';
-import { URL } from '../utils/constants';
 
 const ProductForm: React.FC<ProductFormProps> = ({
   title,
@@ -22,7 +21,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
   };
 
   const onSubmit = async (values: Product, actions: FormikHelpers<Product>) => {
-    const storeInfo = await axios.get(`${URL}/store/my-store`, { headers });
+    const storeInfo = await axios.get(`${import.meta.env.VITE_REACT_URL}/store/my-store`, {
+      headers,
+    });
     const store = storeInfo.data;
     const { name, price, description, imageUrl, category } = values;
     let urlCloud;
@@ -55,11 +56,17 @@ const ProductForm: React.FC<ProductFormProps> = ({
     try {
       let response;
       if (title === 'Edit Product') {
-        response = await axios.patch(`${URL}/products/${productInfo?._id}`, newProduct, {
+        response = await axios.patch(
+          `${import.meta.env.VITE_REACT_URL}/products/${productInfo?._id}`,
+          newProduct,
+          {
+            headers,
+          }
+        );
+      } else {
+        response = await axios.post(`${import.meta.env.VITE_REACT_URL}/products`, newProduct, {
           headers,
         });
-      } else {
-        response = await axios.post(`${URL}/products`, newProduct, { headers });
       }
       const product = response?.data;
       console.log(product);

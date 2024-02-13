@@ -5,9 +5,7 @@ import { Registration, User } from '../models/interfaces';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/useAuth';
-import { URL } from '../utils/constants';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -18,7 +16,7 @@ const RegistrationForm: React.FC = () => {
       password: values.password,
     };
     try {
-      const response = await axios.post(`${URL}/auth/register`, newUser);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_URL}/auth/register`, newUser);
       const user = response.data;
       localStorage.setItem('user', JSON.stringify(user));
       login(user);

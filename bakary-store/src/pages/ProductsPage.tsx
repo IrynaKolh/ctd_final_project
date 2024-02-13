@@ -6,7 +6,6 @@ import Search from '../components/Search';
 import Sorting from '../components/Sorting';
 import Filters from '../components/Filters';
 import { Link } from 'react-router-dom';
-import { URL } from '../utils/constants';
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<ProductResponse[] | []>([]);
@@ -36,7 +35,7 @@ const ProductsPage: React.FC = () => {
     const getProducts = async () => {
       try {
         const response = await axios.get(
-          `${URL}/products?name=${searchInput}&category=${selectedCategory}&sort=${sortInput}&page=${currentPage}&limit=12`
+          `${import.meta.env.VITE_REACT_URL}/products?name=${searchInput}&category=${selectedCategory}&sort=${sortInput}&page=${currentPage}&limit=12`
         );
         setProducts(response.data.products);
         setAmount(response.data.count);

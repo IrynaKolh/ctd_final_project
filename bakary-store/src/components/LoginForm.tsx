@@ -5,15 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Login } from '../models/interfaces';
 import { useAuth } from '../utils/useAuth';
-import { URL } from '../utils/constants';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const onSubmit = async (values: Login, actions: FormikHelpers<Login>) => {
     try {
-      const response = await axios.post(`${URL}/auth/login`, values);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_URL}/auth/login`, values);
       const user = response.data;
 
       localStorage.setItem('user', JSON.stringify(user));

@@ -4,7 +4,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/useAuth';
 import { sellerSchema } from '../schemas';
-import { URL } from '../utils/constants';
 
 const SellerRegisterForm: React.FC = () => {
   const { login, user } = useAuth();
@@ -17,9 +16,13 @@ const SellerRegisterForm: React.FC = () => {
     actions: FormikHelpers<{ isSeller: boolean }>
   ) => {
     try {
-      const response = await axios.patch(`${URL}/auth/register`, values, {
-        headers,
-      });
+      const response = await axios.patch(
+        `${import.meta.env.VITE_REACT_URL}/auth/register`,
+        values,
+        {
+          headers,
+        }
+      );
       const user = response.data;
       localStorage.setItem('user', JSON.stringify(user));
       login(user);

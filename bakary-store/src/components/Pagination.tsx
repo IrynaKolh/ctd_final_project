@@ -1,5 +1,4 @@
 import React from 'react';
-// import { IconCaretLeft, IconCaretRight } from '@tabler/icons-react';
 import { PaginatioProps } from '../models/interfaces';
 
 const Pagination: React.FC<PaginatioProps> = ({ currentPage, totalPages, onPageChange }) => {
