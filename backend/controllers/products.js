@@ -3,20 +3,18 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({ createdBy: req.user.userId }).sort(
+  const products = await Product.find().sort(
     "createdAt"
   );
   res.status(StatusCodes.OK).json({ products, count: products.length });
 };
 
 const getProductById = async (req, res) => {
-  const {
-    user: { userId },
+  const {   
     params: { id: productId },
   } = req;
   const product = await Product.findOne({
     _id: productId,
-    createdBy: userId,
   });
   if (!product) {
     throw new NotFoundError(`No product with id: ${productId}`);
@@ -32,12 +30,12 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const {
-    body: { name, price, description, type },
+    body: { name, price, description, category },
     user: { userId },
     params: { id: productId },
   } = req;
 
-  if (!name || !price || !description || !type) {
+  if (!name || !price || !description || !category) {
     throw new BadRequestError("Please provide all values");
   }
 
@@ -78,4 +76,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  uploadProductImage
 };
