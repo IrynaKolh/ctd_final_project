@@ -25,11 +25,17 @@ const StoreForm: React.FC<StoreFormProps> = ({ title, storeInfo, isOpenStoreModa
     try {
       let response;
       if (title === 'Update Store') {
-        response = await axios.patch(`http://localhost:3000/store/${storeInfo?._id}`, newStore, {
+        response = await axios.patch(
+          `${import.meta.env.VITE_REACT_URL}/store/${storeInfo?._id}`,
+          newStore,
+          {
+            headers,
+          }
+        );
+      } else {
+        response = await axios.post(`${import.meta.env.VITE_REACT_URL}/store`, newStore, {
           headers,
         });
-      } else {
-        response = await axios.post('http://localhost:3000/store', newStore, { headers });
       }
       const storeData = response?.data;
       localStorage.setItem('storeInfo', JSON.stringify(storeData));

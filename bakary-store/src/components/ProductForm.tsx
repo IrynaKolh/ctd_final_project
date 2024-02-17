@@ -8,28 +8,40 @@ import { IconPhoto } from '@tabler/icons-react';
 import PrevievImage from './PreviewImage';
 import { uploadImage } from '../utils/uploadImage';
 
-const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductModalOpen }) => {
+const ProductForm: React.FC<ProductFormProps> = ({
+  title,
+  onClose,
+  isAddProductModalOpen,
+  setNeedUpdate,
+  productInfo,
+}) => {
   const { user } = useAuth();
   const headers = {
     Authorization: `Bearer ${user?.token}`,
   };
 
   const onSubmit = async (values: Product, actions: FormikHelpers<Product>) => {
-    const storeInfo = await axios.get('http://localhost:3000/store/my-store', { headers });
+    const storeInfo = await axios.get(`${import.meta.env.VITE_REACT_URL}/store/my-store`, {
+      headers,
+    });
     const store = storeInfo.data;
     const { name, price, description, imageUrl, category } = values;
     let urlCloud;
 
-    try {
-      if (typeof values.imageUrl === 'string') {
-        const fileResponse = await axios.get(imageUrl[0], { responseType: 'blob' });
-        const imageFile = new File([fileResponse.data], 'image.jpg', { type: 'image/jpeg' });
-        urlCloud = await uploadImage(imageFile);
-      } else {
-        urlCloud = await uploadImage(imageUrl as unknown as File);
+    if (productInfo && !imageUrl) {
+      urlCloud = productInfo.imageUrl[0];
+    } else {
+      try {
+        if (typeof values.imageUrl === 'string') {
+          const fileResponse = await axios.get(imageUrl[0], { responseType: 'blob' });
+          const imageFile = new File([fileResponse.data], 'image.jpg', { type: 'image/jpeg' });
+          urlCloud = await uploadImage(imageFile);
+        } else {
+          urlCloud = await uploadImage(imageUrl as unknown as File);
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
       }
-    } catch (error) {
-      console.error('Error uploading image:', error);
     }
 
     const newProduct: Product = {
@@ -40,19 +52,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
       category: category,
       storeId: store.store._id,
     };
-    console.log(newProduct);
 
     try {
       let response;
       if (title === 'Edit Product') {
-        response = await axios.patch(`http://localhost:3000/products/${1}`, newProduct, {
+        response = await axios.patch(
+          `${import.meta.env.VITE_REACT_URL}/products/${productInfo?._id}`,
+          newProduct,
+          {
+            headers,
+          }
+        );
+      } else {
+        response = await axios.post(`${import.meta.env.VITE_REACT_URL}/products`, newProduct, {
           headers,
         });
-      } else {
-        response = await axios.post('http://localhost:3000/products', newProduct, { headers });
       }
       const product = response?.data;
       console.log(product);
+      setNeedUpdate(true);
       actions.resetForm();
       onClose();
     } catch (error) {
@@ -70,11 +88,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
     handleSubmit,
     setFieldValue,
   } = useFormik({
-    initialValues: {
+    initialValues: productInfo || {
       name: '',
       price: 0,
       description: '',
-      imageUrl: [],
+      imageUrl: [''],
       storeId: '',
       category: '',
     },
@@ -184,7 +202,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ title, onClose, isAddProductM
                       </label>
                       <div className="w-42 h-42 mt-2 relative flex justify-center gap-4 rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                         {values.imageUrl ? (
-                          <PrevievImage file={values.imageUrl} />
+                          <PrevievImage file={values.imageUrl[0] as unknown as File} />
                         ) : (
                           <IconPhoto
                             className="mx-auto h-12 w-12 text-gray-300"

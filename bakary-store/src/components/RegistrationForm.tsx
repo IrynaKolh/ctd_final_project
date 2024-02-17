@@ -3,10 +3,9 @@ import { FormikHelpers, useFormik } from 'formik';
 import { registrationSchema } from '../schemas';
 import { Registration, User } from '../models/interfaces';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/useAuth';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -17,7 +16,7 @@ const RegistrationForm: React.FC = () => {
       password: values.password,
     };
     try {
-      const response = await axios.post('http://localhost:3000/auth/register', newUser);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_URL}/auth/register`, newUser);
       const user = response.data;
       localStorage.setItem('user', JSON.stringify(user));
       login(user);
@@ -163,6 +162,15 @@ const RegistrationForm: React.FC = () => {
             </button>
           </div>
         </form>
+        <p className="mt-10 text-center text-base text-gray-500">
+          Have already account?
+          <Link
+            to="/login"
+            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 px-2"
+          >
+            Login Form
+          </Link>
+        </p>
       </div>
     </div>
   );

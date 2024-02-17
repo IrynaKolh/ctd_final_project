@@ -82,12 +82,17 @@ export interface StoreFormProps {
 
 export interface MyStoreInfoProps {
   storeInfo: StoreInfo | null;
+  products: ProductResponse[] | [];
+  onDelete: (productId: string) => void;
+  setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ProductFormProps {
   onClose: () => void;
   isAddProductModalOpen: boolean;
   title: string;
+  setNeedUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  productInfo: ProductResponse | null;
 }
 
 type Review = {
@@ -103,11 +108,32 @@ export interface Product {
   imageUrl: string[];
   category: string;
   storeId: string;
-  _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  rating?: number;
-  review?: [Review];
+}
+
+export interface ProductResponse extends Product {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  rating: number;
+  review: [Review];
 }
 
 export type InputType = 'text' | 'number' | 'password' | 'email';
+
+export interface PaginatioProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (pageTerm: number) => void;
+}
+
+export type SearchProps = {
+  onSearch: (searchTerm: string) => void;
+};
+
+export type SortProps = {
+  onSort: (sortTerm: string) => void;
+};
+
+export type FiltersProps = {
+  onFilter: (filterTerm: string) => void;
+};

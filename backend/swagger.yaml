@@ -1,0 +1,587 @@
+openapi: 3.0.0
+info:
+  title: Bakery Store API
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://ikol-bakery-store.onrender.com/
+  variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+      - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterUserRequest'
+              - example:
+                  name: Iryna
+                  email: ira@gmail.com
+                  password: Secret5+
+            example:
+              name: Iryna
+              email: ira@gmail.com
+              password: Secret5+
+        required: true
+      responses:
+        '201':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+    patch:
+      tags:
+      - Auth
+      summary: Become Seller
+      operationId: BecomeSeller
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/BecomeSellerRequest'
+              - example:
+                  isSeller: true
+            example:
+              isSeller: true
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LoginUserRequest'
+              - example:
+                  email: ira@gmail.com
+                  password: Secret5+
+            example:
+              email: ira@gmail.com
+              password: Secret5+
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /store:
+    post:
+      tags:
+      - Store
+      summary: Register Store
+      operationId: RegisterStore
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterStoreRequest'
+              - example:
+                  name: Ira - Sweet Delights Bakery
+                  description: "At Sweet Delights Bakery, we transform ordinary moments into extraordinary memories with our delectable range of cakes. Immerse yourself in a world of flavor where every bite is a celebration. Our Signature Offerings: \U0001F370 Exquisite Custom Designs: Elevate your special occasions with our bespoke cake designs crafted to suit your unique preferences. From elegant weddings to whimsical birthdays, we bring your visions to life. \U0001F308 Diverse Flavors: Explore a palette of flavors that dance on your taste buds. Indulge in classic favorites like rich chocolate and vanilla or embark on a culinary adventure with exotic choices like mango passionfruit and lavender lemon. \U0001F382 Specialty Collections: Our curated collections cater to every taste and theme. Dive into the velvety layers of our Red Velvet Symphony or savor the tropical paradise with our Coconut Paradise Delight. Indulge, celebrate, and create lasting memories with Sweet Delights Bakery – where every cake tells a story, and every moment is sweeter."
+                  address:
+                    country: Canada
+                    street: 23305 Chagrin Blvd
+                    city: Beachwood
+                    state: OH
+                    zipCode: '44122'
+                  contact:
+                    email: ira2@gmail.com
+                    phone: '+14073850125'
+            example:
+              name: Ira - Sweet Delights Bakery
+              description: "At Sweet Delights Bakery, we transform ordinary moments into extraordinary memories with our delectable range of cakes. Immerse yourself in a world of flavor where every bite is a celebration. Our Signature Offerings: \U0001F370 Exquisite Custom Designs: Elevate your special occasions with our bespoke cake designs crafted to suit your unique preferences. From elegant weddings to whimsical birthdays, we bring your visions to life. \U0001F308 Diverse Flavors: Explore a palette of flavors that dance on your taste buds. Indulge in classic favorites like rich chocolate and vanilla or embark on a culinary adventure with exotic choices like mango passionfruit and lavender lemon. \U0001F382 Specialty Collections: Our curated collections cater to every taste and theme. Dive into the velvety layers of our Red Velvet Symphony or savor the tropical paradise with our Coconut Paradise Delight. Indulge, celebrate, and create lasting memories with Sweet Delights Bakery – where every cake tells a story, and every moment is sweeter."
+              address:
+                country: Canada
+                street: 23305 Chagrin Blvd
+                city: Beachwood
+                state: OH
+                zipCode: '44122'
+              contact:
+                email: ira2@gmail.com
+                phone: '+14073850125'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /store/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The store ID
+    patch:
+      tags:
+      - Store
+      summary: Update Store by ID
+      operationId: UpdateStorebyID
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateStorebyIDRequest'
+              - example:
+                  name: Ira - Sweet Delights Bakery
+                  description: "At Sweet Delights Bakery, we transform ordinary moments into extraordinary memories with our delectable range of cakes. Immerse yourself in a world of flavor where every bite is a celebration. Our Signature Offerings: \U0001F370 Exquisite Custom Designs: Elevate your special occasions with our bespoke cake designs crafted to suit your unique preferences. From elegant weddings to whimsical birthdays, we bring your visions to life. \U0001F308 Diverse Flavors: Explore a palette of flavors that dance on your taste buds. Indulge in classic favorites like rich chocolate and vanilla or embark on a culinary adventure with exotic choices like mango passionfruit and lavender lemon. \U0001F382 Specialty Collections: Our curated collections cater to every taste and theme. Dive into the velvety layers of our Red Velvet Symphony or savor the tropical paradise with our Coconut Paradise Delight. Indulge, celebrate, and create lasting memories with Sweet Delights Bakery – where every cake tells a story, and every moment is sweeter."
+                  address:
+                    street: 23305 Chagrin Blvd
+                    city: Beachwood
+                    state: OH
+                    zipCode: '44122'
+                  contact:
+                    email: ira@gmail.com
+                    phone: '+14073850125'
+            example:
+              name: Ira - Sweet Delights Bakery
+              description: "At Sweet Delights Bakery, we transform ordinary moments into extraordinary memories with our delectable range of cakes. Immerse yourself in a world of flavor where every bite is a celebration. Our Signature Offerings: \U0001F370 Exquisite Custom Designs: Elevate your special occasions with our bespoke cake designs crafted to suit your unique preferences. From elegant weddings to whimsical birthdays, we bring your visions to life. \U0001F308 Diverse Flavors: Explore a palette of flavors that dance on your taste buds. Indulge in classic favorites like rich chocolate and vanilla or embark on a culinary adventure with exotic choices like mango passionfruit and lavender lemon. \U0001F382 Specialty Collections: Our curated collections cater to every taste and theme. Dive into the velvety layers of our Red Velvet Symphony or savor the tropical paradise with our Coconut Paradise Delight. Indulge, celebrate, and create lasting memories with Sweet Delights Bakery – where every cake tells a story, and every moment is sweeter."
+              address:
+                street: 23305 Chagrin Blvd
+                city: Beachwood
+                state: OH
+                zipCode: '44122'
+              contact:
+                email: ira@gmail.com
+                phone: '+14073850125'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Store
+      summary: Get Store by ID
+      operationId: GetStorebyID
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /products/my-products:
+    get:
+      tags:
+      - Products
+      summary: Get My Store Products
+      operationId: GetMyStoreProducts
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /products:
+    get:
+      tags:
+      - Products
+      summary: Get All Products
+      operationId: GetAllProducts
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+    post:
+      tags:
+      - Products
+      summary: Add New Product
+      operationId: AddNewProduct
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/AddNewProductRequest'
+              - example:
+                  name: name
+                  description: description
+                  price: 10
+                  imageUrl:
+                  - https://res.cloudinary.com/dvpngv7cn/image/upload/v1707431310/upload-bakary/edjbfttnkvoxw2dr7z3e.jpg
+                  category: Pies
+                  storeId: 65c6b0818af786327e04191e
+            example:
+              name: name
+              description: description
+              price: 10
+              imageUrl:
+              - https://res.cloudinary.com/dvpngv7cn/image/upload/v1707431310/upload-bakary/edjbfttnkvoxw2dr7z3e.jpg
+              category: Pies
+              storeId: 65c6b0818af786327e04191e
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+  /products/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: srting
+        required: true
+        description: The product ID
+    patch:
+      tags:
+      - Products
+      summary: Update Product By ID
+      operationId: UpdateProductByID
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateProductByIDRequest'
+              - example:
+                  name: name 4444
+                  description: description 4444
+                  price: 10
+                  imageUrl:
+                  - https://res.cloudinary.com/dvpngv7cn/image/upload/v1707431310/upload-bakary/edjbfttnkvoxw2dr7z3e.jpg
+                  category: Pies
+                  storeId: 65c6b0818af786327e04191e
+            example:
+              name: name 4444
+              description: description 4444
+              price: 10
+              imageUrl:
+              - https://res.cloudinary.com/dvpngv7cn/image/upload/v1707431310/upload-bakary/edjbfttnkvoxw2dr7z3e.jpg
+              category: Pies
+              storeId: 65c6b0818af786327e04191e
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Products
+      summary: Detete Product By ID
+      operationId: DeteteProductByID
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+    get:
+      tags:
+      - Products
+      summary: Get 1  Product
+      operationId: Get1Product
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+components:
+  schemas:
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+      - name
+      - email
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: Iryna
+        email: ira@gmail.com
+        password: Secret5+
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: ira@gmail.com
+        password: Secret5+
+    BecomeSellerRequest:
+      title: BecomeSellerRequest
+      required:
+      - isSeller
+      type: object
+      properties:
+        isSeller:
+          type: boolean
+      example:
+        isSeller: true
+    RegisterStoreRequest:
+      title: RegisterStoreRequest
+      required:
+      - name
+      - description
+      - address
+      - contact
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          allOf:
+          - $ref: '#/components/schemas/Address'
+          - {}
+        contact:
+          allOf:
+          - $ref: '#/components/schemas/Contact'
+          - {}
+      example:
+        name: Ira - Sweet Delights Bakery
+        description: "At Sweet Delights Bakery, we transform ordinary moments into extraordinary memories with our delectable range of cakes. Immerse yourself in a world of flavor where every bite is a celebration. Our Signature Offerings: \U0001F370 Exquisite Custom Designs: Elevate your special occasions with our bespoke cake designs crafted to suit your unique preferences. From elegant weddings to whimsical birthdays, we bring your visions to life. \U0001F308 Diverse Flavors: Explore a palette of flavors that dance on your taste buds. Indulge in classic favorites like rich chocolate and vanilla or embark on a culinary adventure with exotic choices like mango passionfruit and lavender lemon. \U0001F382 Specialty Collections: Our curated collections cater to every taste and theme. Dive into the velvety layers of our Red Velvet Symphony or savor the tropical paradise with our Coconut Paradise Delight. Indulge, celebrate, and create lasting memories with Sweet Delights Bakery – where every cake tells a story, and every moment is sweeter."
+        address:
+          country: Canada
+          street: 23305 Chagrin Blvd
+          city: Beachwood
+          state: OH
+          zipCode: '44122'
+        contact:
+          email: ira2@gmail.com
+          phone: '+14073850125'
+    Address:
+      title: Address
+      required:
+      - country
+      - street
+      - city
+      - state
+      - zipCode
+      type: object
+      properties:
+        country:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+      example:
+        country: Canada
+        street: 23305 Chagrin Blvd
+        city: Beachwood
+        state: OH
+        zipCode: '44122'
+    Contact:
+      title: Contact
+      required:
+      - email
+      - phone
+      type: object
+      properties:
+        email:
+          type: string
+        phone:
+          type: string
+      example:
+        email: ira2@gmail.com
+        phone: '+14073850125'
+    UpdateStorebyIDRequest:
+      title: UpdateStorebyIDRequest
+      required:
+      - name
+      - description
+      - address
+      - contact
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          allOf:
+          - $ref: '#/components/schemas/Address1'
+          - {}
+        contact:
+          allOf:
+          - $ref: '#/components/schemas/Contact'
+          - {}
+      example:
+        name: Ira - Sweet Delights Bakery
+        description: "At Sweet Delights Bakery, we transform ordinary moments into extraordinary memories with our delectable range of cakes. Immerse yourself in a world of flavor where every bite is a celebration. Our Signature Offerings: \U0001F370 Exquisite Custom Designs: Elevate your special occasions with our bespoke cake designs crafted to suit your unique preferences. From elegant weddings to whimsical birthdays, we bring your visions to life. \U0001F308 Diverse Flavors: Explore a palette of flavors that dance on your taste buds. Indulge in classic favorites like rich chocolate and vanilla or embark on a culinary adventure with exotic choices like mango passionfruit and lavender lemon. \U0001F382 Specialty Collections: Our curated collections cater to every taste and theme. Dive into the velvety layers of our Red Velvet Symphony or savor the tropical paradise with our Coconut Paradise Delight. Indulge, celebrate, and create lasting memories with Sweet Delights Bakery – where every cake tells a story, and every moment is sweeter."
+        address:
+          street: 23305 Chagrin Blvd
+          city: Beachwood
+          state: OH
+          zipCode: '44122'
+        contact:
+          email: ira@gmail.com
+          phone: '+14073850125'
+    Address1:
+      title: Address1
+      required:
+      - street
+      - city
+      - state
+      - zipCode
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zipCode:
+          type: string
+      example:
+        street: 23305 Chagrin Blvd
+        city: Beachwood
+        state: OH
+        zipCode: '44122'
+    AddNewProductRequest:
+      title: AddNewProductRequest
+      required:
+      - name
+      - description
+      - price
+      - imageUrl
+      - category
+      - storeId
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+          format: int32
+        imageUrl:
+          type: array
+          items:
+            type: string
+          description: ''
+        category:
+          type: string
+        storeId:
+          type: string
+      example:
+        name: name
+        description: description
+        price: 10
+        imageUrl:
+        - https://res.cloudinary.com/dvpngv7cn/image/upload/v1707431310/upload-bakary/edjbfttnkvoxw2dr7z3e.jpg
+        category: Pies
+        storeId: 65c6b0818af786327e04191e
+    UpdateProductByIDRequest:
+      title: UpdateProductByIDRequest
+      required:
+      - name
+      - description
+      - price
+      - imageUrl
+      - category
+      - storeId
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+          format: int32
+        imageUrl:
+          type: array
+          items:
+            type: string
+          description: ''
+        category:
+          type: string
+        storeId:
+          type: string
+      example:
+        name: name 4444
+        description: description 4444
+        price: 10
+        imageUrl:
+        - https://res.cloudinary.com/dvpngv7cn/image/upload/v1707431310/upload-bakary/edjbfttnkvoxw2dr7z3e.jpg
+        category: Pies
+        storeId: 65c6b0818af786327e04191e
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: Auth
+  description: ''
+- name: Store
+  description: ''
+- name: Products
+  description: ''

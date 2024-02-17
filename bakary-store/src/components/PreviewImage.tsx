@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const PreviewImage: React.FC<any> = ({ file }) => {
-  const [preview, setPreview] = useState<string | ArrayBuffer | null>('');
-  if (file) {
+const PreviewImage: React.FC<{ file: File }> = ({ file }) => {
+  const [preview, setPreview] = useState<string | undefined>();
+
+  useEffect(() => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      setPreview(reader.result);
-    };
-  }
+    if (file instanceof Blob) {
+      reader.onload = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [file]);
+
   return (
     <div className="w-36 h-36 mx-auto">
       {preview && (
-        <img
-          className="w-36 h-36 object-cover object-center"
-          src={preview.toString()}
-          alt="product image"
-        />
+        <img className="w-36 h-36 object-cover object-center" src={preview} alt="product image" />
       )}
     </div>
   );
