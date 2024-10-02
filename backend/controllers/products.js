@@ -19,7 +19,7 @@ const getAllProducts = async (req, res) => {
     const sortList = sort.split(",").join(" ");
     result = result.sort(sortList); //transform mongoose query object
   } else {
-    result = result.sort("createdAt");
+    result = result.sort("-createdAt");
   }
 
   const productsCount = await Product.countDocuments(queryObject);
